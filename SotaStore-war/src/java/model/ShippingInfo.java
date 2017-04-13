@@ -15,7 +15,7 @@ public class ShippingInfo {
     private String customerName;
     private int districtId;
     private String address;
-    private String phone;
+    private String phone;    
 
     public int getMemberId() {
         return memberId;

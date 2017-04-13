@@ -89,7 +89,7 @@
                         <ui:repeat value="#{cartMB.cart}" var="row" >
                             <div class="cart-item">
                                 <div class="col-md-3">
-                                    <h:graphicImage value="#{resource[row.p.imageLink]}" class="img-responsive"/>
+                                    <h:graphicImage height="100px"  style="object-fit: cover; max-height: 100px;" value="#{resource[row.p.imageLink]}" class="img-responsive"/>
                                 </div>
                                 <div class="col-md-9" style="margin-bottom: 20px;">                                
                                     <h3 style="margin-bottom: 5px; margin-top: 5px; font-weight: bold;">
@@ -140,7 +140,7 @@
                                 <button class="btn btn-default" style="background-color: #4c7576; color: #FFF; font-weight: bold;">Apply</button>
                                 <div class="score-added">
                                     <p>Score added after order completed: <i class="badge">
-                                        <h:outputText value="#{cartMB.total/100000}">
+                                        <h:outputText value="#{cartMB.scoreAdded}">
                                             <f:convertNumber type="number"/>
                                         </h:outputText>                                        
                                         </i></p>
@@ -298,9 +298,9 @@
                             <h:form rendered="#{usersMB.loginUsers != null}" prependId="false">
                                 <div class="form-group">                              
                                     <div class="checkbox">
-                                        <label>
-                                            <h:selectBooleanCheckbox binding="#{checkbox}" id="chkAddress" value="#{cartMB.shippingCheck}" /> Shipping info the same as registered info
-                                        </label>
+                                        <h:outputLabel rendered="#{usersMB.loginUsers.district != null}">
+                                            <h:selectBooleanCheckbox rendered="#{usersMB.loginUsers.district != null}" binding="#{checkbox}" id="chkAddress" value="#{cartMB.shippingCheck}" /> <h:outputText value="Shipping info the same as registered info" rendered="#{usersMB.loginUsers.district != null}"/>
+                                        </h:outputLabel>
                                     </div>                              
                                 </div>
                                 <div id="shipping-option">                                    

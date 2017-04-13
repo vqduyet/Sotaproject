@@ -8,6 +8,7 @@ package controller;
 
 import beans.OrderDetailFacadeLocal;
 import beans.OrdersFacadeLocal;
+import beans.ShippingFeeFacadeLocal;
 import beans.UsersFacadeLocal;
 import entity.OrderDetail;
 import entity.OrderDetailPK;
@@ -34,11 +35,14 @@ import model.ShippingInfo;
 @SessionScoped
 public class CartMB {
     @EJB
+    private ShippingFeeFacadeLocal shippingFeeFacade;
+    @EJB
     private UsersFacadeLocal usersFacade;
     @EJB
     private OrderDetailFacadeLocal orderDetailFacade;
     @EJB
     private OrdersFacadeLocal ordersFacade;
+    
     
     //inject product managed bean
     @ManagedProperty(value="#{productMB}")
@@ -68,7 +72,7 @@ public class CartMB {
     private BigDecimal total = BigDecimal.ZERO;
     private Orders order = null;
     private int qtyItemDetail = 1;
-    private ShippingInfo shippingInfo;
+    private ShippingInfo shippingInfo = new ShippingInfo();
     private int scoreApplied = 0;
     private boolean shippingCheck = false;
     private int scoreAdded = 0;
@@ -231,12 +235,29 @@ public class CartMB {
     public void applyScore(){
         if(total.compareTo(new BigDecimal(scoreApplied * 10000)) < 0){
            scoreApplied = 0;
-           
+           //alert
+        }
+        if(memberMB.getLoginUsers().getScore() < scoreApplied){
+            scoreApplied = 0;
+            //alert
         }
     }
     
     /* check shipping info */
     public String checkShippingInfo(){
+        if(memberMB.getLoginUsers() != null){
+            shippingInfo.setCustomerName(memberMB.getLoginUsers().getFullName());                
+            shippingInfo.setMemberId(memberMB.getLoginUsers().getId());
+            if(shippingCheck){ //nghia la da o ho chi minh                
+                shippingInfo.setPhone(memberMB.getLoginUsers().getPhone());
+                shippingInfo.setAddress(memberMB.getLoginUsers().getAddress());
+                shippingInfo.setDistrictId(memberMB.getLoginUsers().getDistrict().getId());                
+            }
+            //khong o ho chi minh: check shipping info
+        }
+        else {
+           //check check shipping info and alert 
+        }
         return "/cart/checkout-confirm?faces-redirect=true";
     }
     
@@ -249,55 +270,44 @@ public class CartMB {
             order = new Orders();
             // total quantity
             order.setQuantity(this.countItems());
-            // total amount = pretax * 1.1
-            order.setAmount(this.total.multiply(new BigDecimal(1.1)));
+            // total amount = (pretax - score) * 1.1
+            order.setAmount((getTotal().subtract(new BigDecimal(scoreApplied * 10000))).multiply(new BigDecimal(1.1)));
             // set user id and user name            
             if(memberMB.getLoginUsers() != null){
-               int clientId = memberMB.getLoginUsers().getId();
-               order.setUsersId(usersFacade.find(clientId));
-               order.setUsersName(memberMB.getLoginUsers().getUserName());
-               //shipping check
-               if(shippingCheck){ 
-                   if(memberMB.getLoginUsers().getDistrict() != null){
-                       order.setShippingAddress(memberMB.getLoginUsers().getAddress());
-                       order.setDistrict(memberMB.getLoginUsers().getDistrict());
-                       order.setShippingFee(memberMB.getLoginUsers().getDistrict().getFee());
-                       order.setScore(scoreApplied);
-                   }
-                   else{
-                       return null; //thong bao
-                   }
-                   //shipping info                  
-                   
-               }
-            } else{
-               order.setUsersName(shippingInfo.getCustomerName());
+               order.setUsersId(usersFacade.find(shippingInfo.getMemberId()));              
             }
-            //shipping info
-            
-                order.setShippingAddress(null);
+               order.setUsersName(shippingInfo.getCustomerName());
+               order.setShippingAddress(shippingInfo.getAddress());
+               order.setDistrict(shippingFeeFacade.find(shippingInfo.getDistrictId()));
+               order.setShippingFee(shippingFeeFacade.find(shippingInfo.getDistrictId()).getFee());
+               order.setScore(scoreApplied);
             
             // add order 
             ordersFacade.create(order);            
             
-            /* create order detail */
-            for(Item item: cart){
-                OrderDetail orderDetail = new OrderDetail();
-                OrderDetailPK pk = new OrderDetailPK(order.getId(), item.getP().getId());
-                orderDetail.setOrderDetailPK(pk);
-                orderDetail.setPrice(item.getP().getPrice());
-                orderDetail.setQuantity(item.getQuantity());
-                orderDetail.setAmount(item.getP().getPrice().multiply(new BigDecimal(item.getQuantity())));
-                orderDetailFacade.create(orderDetail);
-            }
+                /* create order detail */
+                for(Item item: cart){
+                    OrderDetail orderDetail = new OrderDetail();
+                    OrderDetailPK pk = new OrderDetailPK(order.getId(), item.getP().getId());
+                    orderDetail.setOrderDetailPK(pk);
+                    orderDetail.setPrice(item.getP().getPrice());
+                    orderDetail.setQuantity(item.getQuantity());
+                    orderDetail.setAmount(item.getP().getPrice().multiply(new BigDecimal(item.getQuantity())));
+                    orderDetailFacade.create(orderDetail);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 return "/cart/order-error?faces-redirect=true";
             }
             //empty cart
-            cart = new ArrayList<Item>();          
-        }  
-        return "/cart/order-success?faces-redirect=true";
+            cart = new ArrayList<Item>();
+            return "/cart/order-success?faces-redirect=true";
+        }
+        else{
+            //set alert
+            return null;
+        }
+        
     }
     
 }

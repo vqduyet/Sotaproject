@@ -101,7 +101,7 @@ public class productMB {
     }
     
     public List<Products> fetchSpecialDishesToday(){
-        return productsFacade.getProductsByCatalog(6);
+        return productsFacade.getSpecialDishes();
     }
 
 }

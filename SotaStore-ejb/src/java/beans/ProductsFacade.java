@@ -65,7 +65,7 @@ public class ProductsFacade extends AbstractFacade<Products> implements Products
     
     @Override
     public List<Products> getSpecialDishes() {
-        Query q = em.createQuery("SELECT p FROM Product p WHERE p.catalogId.catalogName = :day");
+        Query q = em.createQuery("SELECT p FROM Products p WHERE p.catalogId.name = :day");
         Date now = new Date();
         SimpleDateFormat  simpleDateformat = new SimpleDateFormat("EEEE");
         q.setParameter("day", simpleDateformat.format(now));

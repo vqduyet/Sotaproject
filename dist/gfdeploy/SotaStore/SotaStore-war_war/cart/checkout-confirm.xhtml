@@ -66,8 +66,8 @@
                         <h1 style="font-size:  x-large;">You are almost done!</h1>
                         <hr style="border-bottom: solid 1px orange;"/>
                         <h:form>
-                        <h:outputLink value="#{request.contextPath}/cart/order-success.xhtml" styleClass="btn btn-default" style="background-color: #4c7576; color: #FFF; font-weight: bold;">CONFIRM ORDER</h:outputLink>
-                        <h:outputLink value="#{request.contextPath}/cart/checkout-shipping.xhtml" styleClass="btn btn-default pull-right" style="font-weight: bold;">BACK TO SHIPPING INFO</h:outputLink>
+                            <h:commandLink action="#{cartMB.checkout()}" styleClass="btn btn-default" style="background-color: #4c7576; color: #FFF; font-weight: bold;"><i class="fa fa-paw"></i> CONFIRM ORDER</h:commandLink>
+                            <h:outputLink value="#{request.contextPath}/cart/checkout-shipping.xhtml" styleClass="btn btn-default pull-right" style="font-weight: bold;"><i class="fa fa-backward"></i> BACK TO SHIPPING INFO</h:outputLink>
                         </h:form>
                     </div>
                     <!-- /confirm order -->
