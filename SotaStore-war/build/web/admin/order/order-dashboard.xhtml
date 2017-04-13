@@ -1,0 +1,354 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    template="./../layout/adminLayout.xhtml">
+
+    <ui:define name="title">
+        <title>Order Dashboard</title>
+    </ui:define>
+
+    <ui:define name="content">
+        <style>
+            .tb-order .form-control{
+                border: 1px solid #ccc !important;
+            }
+            .dataTables_info, .dataTables_paginate{
+                font-size: 13px !important;
+            }
+            .page-title{
+                background-color: #ccc;
+                padding-top: 10px;
+                padding-bottom: 5px;
+                margin: 0px 10px 20px 5px;                
+                border-radius: 10px;
+                color: #026660;                
+            }
+            .tb-order th {
+                text-align: center;
+            }
+            .dataTables_wrapper>.row {
+                overflow: auto !important;                
+            }
+            table.dataTable{
+                font-size: 14px;
+            }
+            table.dataTable td{
+                vertical-align: middle !important;
+            }
+            table.dataTable a{
+                font-size: 11px;
+                margin: 2px;
+            }
+            .dataTables_info {
+                width: 60%;
+                float: left;
+            }
+            .dataTables_paginate {
+                float: right;
+            }
+        </style>        
+        <div class="clearfix"></div>
+        <div class="col-md-12 page-title animated fadeInRight">
+            <h3><i class="fa fa-search"></i> ORDER DASHBOARD</h3>
+        </div>
+        <div class="clearfix"></div>
+        <div class="grid_3 grid_5">            
+	     <div class="but_list">
+	       <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
+                    <ul id="myTab" class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#waiting" id="waiting-tab" role="tab" data-toggle="tab" aria-controls="waiting" aria-expanded="true">Waiting <i class="badge badge-danger">1</i></a></li>
+                        <li role="presentation"><a href="#progress" role="tab" id="progress-tab" data-toggle="tab" aria-controls="progress">Progress <i class="badge">1</i></a></li>
+                        <li role="presentation"><a href="#delivery" role="tab" id="delivery-tab" data-toggle="tab" aria-controls="delivery">Delivery <i class="badge">1</i></a></li>
+                        <li role="presentation"><a href="#complete" role="tab" id="complete-tab" data-toggle="tab" aria-controls="complete">Complete</a></li>
+                        <li role="presentation"><a href="#canceled" role="tab" id="canceled-tab" data-toggle="tab" aria-controls="canceled">Canceled</a></li>
+                        <li role="presentation"><a href="#all" role="tab" id="all-tab" data-toggle="tab" aria-controls="all">All Orders</a></li> 
+                    </ul>
+                   <!-- toggle tabs -->
+		<div id="myTabContent" class="tab-content">
+                    <!-- waiting list -->
+		  <div role="tabpanel" class="tab-pane fade in active" id="waiting" aria-labelledby="waiting-tab">
+		    <div class="tb-order col-md-12">                        
+                        <table id="tbWaiting" class="table table-striped table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Order ID</th>
+                            <th>Customer Name</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                              <td>7</td>
+                              <td>Nguyen Van Tam</td>
+                              <td>0123456789</td>
+                              <td>123 Dinh Bo Linh, Q. Binh Thanh</td>
+                              <td>10/04/2017</td>
+                              <td>Waiting</td>
+                              <td>
+                                  <a href="#{request.contextPath}/admin/order/order-detail.xhtml" class="btn btn-sm btn-default">Detail</a>
+                                  <a href="#" class="btn btn-sm btn-info"><i class="fa fa-forward"></i> Progress</a>
+                              </td>
+                            </tr>                                                   
+                        </tbody>
+                    </table>
+                    </div>
+                      <div class="clearfix"></div>
+		  </div>
+                    <!-- /waiting list -->
+                    <!-- progress list -->
+		  <div role="tabpanel" class="tab-pane fade" id="progress" aria-labelledby="progress-tab">
+		    <div class="tb-order col-md-12">                        
+                        <table id="tbProgress" class="table table-striped table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Order ID</th>
+                            <th>Customer Name</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                              <td>6</td>
+                              <td>Nguyen Thi Tuoi</td>
+                              <td>0123456789</td>
+                              <td>22 Truong Chinh, Q. Tan Binh</td>
+                              <td>10/04/2017</td>
+                              <td>Progress</td>
+                              <td>
+                                  <a href="#" class="btn btn-sm btn-default">Detail</a>
+                                  <a href="#" class="btn btn-sm btn-info"><i class="fa fa-forward"></i> Delivery</a>
+                              </td>
+                            </tr>                                                   
+                        </tbody>
+                    </table>
+                    </div>
+                      <div class="clearfix"></div>
+		  </div>
+                    <!-- /progress list -->
+                    <!-- delivery list -->
+		  <div role="tabpanel" class="tab-pane fade" id="delivery" aria-labelledby="delivery-tab">
+		    <div class="tb-order col-md-12">                        
+                        <table id="tbDelivery" class="table table-striped table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Order ID</th>
+                            <th>Customer Name</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                              <td>5</td>
+                              <td>Nguyen Tran Thuat</td>
+                              <td>0123456789</td>
+                              <td>224 Truong Chinh, Q. Tan Binh</td>
+                              <td>10/04/2017</td>
+                              <td>Delivery</td>
+                              <td>
+                                  <a href="#" class="btn btn-sm btn-default">Detail</a>
+                                  <a href="#" class="btn btn-sm btn-info"><i class="fa fa-forward"></i> Complete</a>
+                              </td>
+                            </tr>                                                   
+                        </tbody>
+                    </table>
+                    </div>
+                      <div class="clearfix"></div>
+		  </div>
+                    <!-- /delivery list -->
+                    <!-- complete list -->
+		  <div role="tabpanel" class="tab-pane fade" id="complete" aria-labelledby="complete-tab">
+		    <div class="tb-order col-md-12">                        
+                        <table id="tbComplete" class="table table-striped table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Order ID</th>
+                            <th>Customer Name</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                              <td>4</td>
+                              <td>Nguyen Thi Nhat</td>
+                              <td>0123456789</td>
+                              <td>122 Truong Chinh, Q. Tan Binh</td>
+                              <td>10/04/2017</td>
+                              <td>Complete</td>
+                              <td>
+                                  <a href="#" class="btn btn-sm btn-default">Detail</a>       
+                              </td>
+                            </tr>                                                   
+                        </tbody>
+                    </table>
+                    </div>
+                      <div class="clearfix"></div>
+		  </div>
+                    <!-- /complete list -->
+                    <!-- canceled list -->
+		  <div role="tabpanel" class="tab-pane fade" id="canceled" aria-labelledby="canceled-tab">
+		    <div class="tb-order col-md-12">                        
+                        <table id="tbCanceled" class="table table-striped table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Order ID</th>
+                            <th>Customer Name</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                              <td>3</td>
+                              <td>Nguyen Thi Hai</td>
+                              <td>0123456789</td>
+                              <td>256 Truong Chinh, Q. Tan Binh</td>
+                              <td>10/04/2017</td>
+                              <td>Canceled</td>
+                              <td>
+                                  <a href="#" class="btn btn-sm btn-default">Detail</a>
+                              </td>
+                            </tr>                                                   
+                        </tbody>
+                    </table>
+                    </div>
+                      <div class="clearfix"></div>
+		  </div>
+                    <!-- /canceled list -->
+		  <!-- all list -->
+		  <div role="tabpanel" class="tab-pane fade" id="all" aria-labelledby="all-tab">
+		    <div class="tb-order col-md-12">                        
+                        <table id="tbAll" class="table table-striped table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Order ID</th>
+                            <th>Customer Name</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                              <td>7</td>
+                              <td>Nguyen Van Tam</td>
+                              <td>0123456789</td>
+                              <td>123 Dinh Bo Linh, Q. Binh Thanh</td>
+                              <td>10/04/2017</td>
+                              <td>Waiting</td>
+                              <td>
+                                  <a href="#{request.contextPath}/admin/order/order-detail.xhtml" class="btn btn-sm btn-default">Detail</a>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>6</td>
+                              <td>Nguyen Thi Tuoi</td>
+                              <td>0123456789</td>
+                              <td>22 Truong Chinh, Q. Tan Binh</td>
+                              <td>10/04/2017</td>
+                              <td>Progress</td>
+                              <td>
+                                  <a href="#" class="btn btn-sm btn-default">Detail</a>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>5</td>
+                              <td>Nguyen Tran Thuat</td>
+                              <td>0123456789</td>
+                              <td>224 Truong Chinh, Q. Tan Binh</td>
+                              <td>10/04/2017</td>
+                              <td>Delivery</td>
+                              <td>
+                                  <a href="#" class="btn btn-sm btn-default">Detail</a>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>4</td>
+                              <td>Nguyen Thi Nhat</td>
+                              <td>0123456789</td>
+                              <td>122 Truong Chinh, Q. Tan Binh</td>
+                              <td>10/04/2017</td>
+                              <td>Complete</td>
+                              <td>
+                                  <a href="#" class="btn btn-sm btn-default">Detail</a>       
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>3</td>
+                              <td>Nguyen Thi Hai</td>
+                              <td>0123456789</td>
+                              <td>256 Truong Chinh, Q. Tan Binh</td>
+                              <td>10/04/2017</td>
+                              <td>Canceled</td>
+                              <td>
+                                  <a href="#" class="btn btn-sm btn-default">Detail</a>
+                              </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                      <div class="clearfix"></div>
+		  </div>
+                    <!-- /canceled list -->	  
+		</div>
+                <!-- /toggle tabs -->
+            </div>
+           </div>
+          </div>
+              
+        <div class="clearfix"> </div>
+        
+        <script>
+            $(document).ready(function(){
+                /* datatable waiting*/
+                $('#tbWaiting').DataTable({
+                    "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]]
+                });
+                /* datatable progress*/
+                $('#tbProgress').DataTable({
+                    "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]]
+                });
+                /* datatable delivery*/
+                $('#tbDelivery').DataTable({
+                    "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]]
+                });
+                /* datatable complete*/
+                $('#tbComplete').DataTable({
+                    "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]]
+                });
+                /* datatable canceled*/
+                $('#tbCanceled').DataTable({
+                    "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]]
+                });
+                /* datatable all*/
+                $('#tbAll').DataTable({
+                    "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]]
+                });
+            });
+        </script>
+    </ui:define>
+
+</ui:composition>

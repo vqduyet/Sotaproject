@@ -1,0 +1,197 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    template="./../layout/adminLayout.xhtml">
+
+    <ui:define name="title">
+        <title>Order Detail</title>
+    </ui:define>   
+
+    <ui:define name="content">
+        <style>
+            .page-title{
+                background-color: #ccc;
+                padding-top: 10px;
+                padding-bottom: 5px;
+                margin: 0px 10px 20px 5px;                
+                border-radius: 10px;
+                color: #026660;                
+            }
+            table.table-condensed td{
+                color: #000 !important;
+                font-size: 14px !important;
+            }
+            .dataTables_wrapper>.row {
+                overflow: auto !important;                
+            }
+            table.dataTable{
+                font-size: 14px;
+            }
+            table.dataTable a{
+                font-size: 11px;
+                margin: 2px;
+            }
+            .dataTables_info {
+                width: 60%;
+                float: left;
+            }
+            .dataTables_paginate {
+                float: right;
+            }
+            .tb-order .form-control{
+                border: 1px solid #ccc !important;
+            }
+            .dataTables_info, .dataTables_paginate{
+                font-size: 13px !important;
+            }
+            form textarea, form select{
+                background-color: #fff !important;
+            }
+        </style>
+        <div class="clearfix"></div>
+        <div class="col-md-12 page-title animated fadeInRight">
+            <h3 class="col-md-6"><i class="fa fa-file-text"></i> ORDER DETAILS</h3>
+            <div class="col-md-6">
+                <a href="#{request.contextPath}/admin/order/order-dashboard.xhtml" class="btn btn-info pull-right">Back to List <i class="fa fa-backward"></i></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="grid_3 grid_5">
+            <div class="row">
+                <!-- order summary -->
+                <div class="col-md-5 animated fadeInDown" style="background-color: #eee; padding: 20px; border-radius: 7px;">
+                    <div class="row">
+                        <h3 style="font-size: 25px; font-weight: bold; text-align: center; margin-bottom: 10px; color:#4c7576;">Order Summary</h3>
+                    </div>
+                    <div class="row">
+                        <hr style="border-bottom: solid 1px #fff;"/>
+                    </div>
+                    <h:form>
+                        <div class="table-responsive">                        
+                            <table class="table table-condensed">               
+                            <tr>
+                              <td>Order ID :</td>
+                              <td style="text-align: right;">7</td>
+                            </tr>
+                            <tr>
+                              <td>Customer Name :</td>
+                              <td style="text-align: right;">Nguyen Van Tam</td>
+                            </tr>
+                            <tr>
+                            <td>Phone :</td>
+                            <td style="text-align: right;">0123456789</td>
+                            </tr>
+                            <tr>
+                              <td>Address :</td>
+                              <td style="text-align: right;">
+                                  <textarea class="form-control" cols="3" style="border-radius: 5px !important; background-color: #fff !important; border: 1px solid #ccc !important;">123 Dinh Bo Linh, Q. Binh Thanh</textarea>                              
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>District :</td>
+                              <td style="text-align: right;">
+                                  <h:selectOneMenu style="background-color: #fff !important; border: 1px solid #ccc !important;" value = "#{memberMB.districtID}" styleClass="form-control">                                           
+                                    <f:selectItem itemValue="" itemLabel="-- Please select district --"/>
+                                    <f:selectItems value="#{memberMB.districtList}" var="row" itemValue = "#{row.id}" itemLabel = "#{row.district}" /> 
+                                 </h:selectOneMenu>
+                              </td>
+                            </tr>                        
+                            <tr>
+                              <td>Total Quantity :</td>
+                              <td style="text-align: right;"><i class="badge badge-danger">2</i></td>
+                            </tr>
+                            <tr>
+                              <td>Total Amount (+ VAT) :</td>
+                              <td style="text-align: right;"><i class="badge badge-danger">330.000 đ</i></td>
+                            </tr>
+                            <tr>
+                              <td>Shipping Fee :</td>
+                              <td style="text-align: right;"><i class="badge badge-danger">15.000 đ</i></td>
+                            </tr>
+                            <tr>
+                                <td>Date :</td>
+                                <td style="text-align: right;">10/4/2017</td>
+                            </tr>
+                            <tr>
+                              <td>Status :</td>
+                              <td style="text-align: right;">                                  
+                                  <select name="" class="form-control" style="background-color: #fff !important; border: 1px solid #ccc !important;">
+                                      <option value="">-- Select Status --</option>
+                                      <option value="Waiting" selected="selected">Waiting</option>
+                                      <option value="In Progress">In Progress</option>
+                                      <option value="Delivery">Delivery</option>
+                                      <option value="Complete">Complete</option>
+                                      <option value="Canceled">Canceled</option>
+                                  </select>
+                              </td>
+                            </tr>                          
+                          </table>
+                            <hr style="border-bottom: solid 1px #fff;"/>
+                            <div class="col-md-offset-4">
+                                <button class="btn btn-info">Update</button>
+                                <button class="btn btn-default">Reset</button>
+                            </div>
+
+                        </div>    
+                    </h:form>
+                    
+                </div>
+                <!-- /order summary -->
+                <!-- order details -->
+                <div class="col-md-7 animated fadeInRight" >
+                  <div class="checkout-cart" style="padding: 20px; margin-bottom: 15px; background-color: #eee;  border-radius: 7px;">
+                        <div class="row">                            
+                            <h3 style="font-size: 25px; font-weight: bold; text-align: center; margin-bottom: 10px; color:#4c7576;">Order Detail</h3>                                                  
+                        </div>                        
+                        <div class="row">
+                            <hr style="border-bottom: solid 1px #fff;"/>
+                        </div>                        
+                        <div class="cart-item">
+                            <div class="col-md-3">
+                                <h:graphicImage value="#{resource['images/food/ita_fish_chip.jpg']}" class="img-responsive"/>
+                            </div>
+                            <div class="col-md-9" style="margin-bottom: 20px;">                                
+                                <h3 style="margin-bottom: 5px; margin-top: 5px; font-weight: bold;">Beijing Roasted Chicken</h3>
+                                <table class="table">
+                                    <tr>
+                                        <td>Quantity: <i class="badge badge-primary">1</i></td>
+                                        <td>Price: <i class="badge badge-primary">200.000 đ</i></td>
+                                        <td>Subtotal: <i class="badge badge-primary">200.000 đ</i></td>
+                                    </tr>
+                                </table>                                
+                            </div>
+                        </div>
+                        <!-- sample data cart-item -->
+                        <div class="cart-item">
+                            <div class="col-md-3">
+                                <h:graphicImage value="#{resource['images/food/ita_pasta.jpg']}" class="img-responsive"/>
+                            </div>
+                            <div class="col-md-9" style="margin-bottom: 20px;">                                
+                                <h3 style="margin-bottom: 5px; margin-top: 5px; font-weight: bold;">Mixed Dimsum</h3>
+                                <table class="table">
+                                    <tr>
+                                        <td>Quantity: <i class="badge badge-primary">1</i></td>
+                                        <td>Price: <i class="badge badge-primary">100.000 đ</i></td>
+                                        <td>Subtotal: <i class="badge badge-primary">100.000 đ</i></td>
+                                    </tr>
+                                </table>                                
+                            </div>
+                        </div>
+                        <!-- /sample data -->
+                        <div class="clearfix"></div>
+                    </div>
+                    
+                </div>
+                <!-- /order details -->
+            </div>
+            
+        </div>
+        <div class="clearfix"> </div>
+            
+    </ui:define>   
+
+</ui:composition>
