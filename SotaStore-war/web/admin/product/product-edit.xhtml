@@ -14,6 +14,9 @@
 
     <ui:define name="content">
         <style>
+            .alert li{
+                list-style: none;
+            }
             .page-title{
                 background-color: #ccc;
                 padding-top: 10px;
@@ -71,7 +74,7 @@
         <h:outputScript name="nicEdit.js" library="admin/js"></h:outputScript>
         <h:outputScript>
             bkLib.onDomLoaded(function() {
-                nicEditors.allTextAreas()
+            nicEditors.allTextAreas()
             });
         </h:outputScript>
         <div class="clearfix"></div>
@@ -94,7 +97,10 @@
                 <div class="form-group">
                     <label for="product-name" class="col-sm-2 control-label">Product Name <span class="req">*</span></label>
                     <div class="col-sm-8">
-                        <h:inputText styleClass="form-control" value="#{adminProductMB.selectedProduct.name}" a:placeholder="...product name" id="product-name"/>                        
+                        <h:inputText styleClass="form-control" value="#{adminProductMB.selectedProduct.name}" a:placeholder="...product name" id="product-name" required="true" requiredMessage="Product Name can't be blank. Please enter value">
+                            <f:validateLength minimum="6" maximum="100" />
+                        </h:inputText>
+                        <h:messages styleClass="alert alert-warning" for="product-name" style = "color:red;margin:8px;" />
                     </div>                    
                 </div>
                 <div class="form-group">
@@ -120,13 +126,18 @@
                     <div class="col-sm-8">
                         <h:selectOneMenu styleClass="form-control" id="subcatalog" required="true" value = "#{adminProductMB.selectedProduct.catalogId.id}">                            
                             <f:selectItems value="#{catalogMB.fetchSubCatalogList()}" var="row" itemValue = "#{row.id}" itemLabel = "#{row.name}" /> 
-                         </h:selectOneMenu>                        
+                        </h:selectOneMenu>                        
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="product-price" class="col-sm-2 control-label">Price <span class="req">*</span></label>
                     <div class="col-sm-8">
-                        <h:inputText styleClass="form-control" value="#{adminProductMB.selectedProduct.price}" a:placeholder="...price" id="product-price"/>                        
+                        <h:inputText styleClass="form-control" value="#{adminProductMB.selectedProduct.price}" a:placeholder="...price" id="product-price" required="true" requiredMessage="Price can't be blank"
+                                     converterMessage="Characters are not allowed in that field. Please input number only."
+                                     validatorMessage="The price must be greater than 10.000 đ">
+                            <f:validateDoubleRange minimum="10000.00" maximum="1000000.00" />
+                        </h:inputText>             
+                        <h:messages styleClass="alert alert-warning" for="product-price" style = "color:red;margin:8px;" />
                     </div>                    
                 </div>
                 <div class="form-group">
@@ -135,40 +146,46 @@
                         <h:selectOneRadio styleClass="tb-radio" value = "#{adminProductMB.selectedProduct.status}">
                             <f:selectItem itemValue = "Normal" itemLabel = "Normal"  />
                             <f:selectItem itemValue = "Inactive" itemLabel = "Inactive" />
-                         </h:selectOneRadio>                        
+                        </h:selectOneRadio>                        
                     </div>                    
                 </div>
                 <div class="form-group">
                     <label for="product-short-desc" class="col-sm-2 control-label">Short Description <span class="req">*</span></label>
                     <div class="col-sm-8">
-                        <h:inputTextarea rows="4" styleClass="form-control" value="#{adminProductMB.selectedProduct.shortDescriptions}" id="product-short-desc" />                       
+                        <h:inputTextarea rows="4" styleClass="form-control" value="#{adminProductMB.selectedProduct.shortDescriptions}" id="product-short-desc" required="true" requiredMessage="Please input somethings for short description" > 
+                            <f:validateLength minimum="10" maximum="150" />
+                        </h:inputTextarea>  
+                        <h:messages for="product-short-desc" style = "color:red;margin:8px;" />                      
                     </div>                    
                 </div>
                 <div class="form-group">
                     <label for="product-desc" class="col-sm-2 control-label">Description <span class="req">*</span></label>
                     <div class="col-sm-8">
-                        <h:inputTextarea rows="4" styleClass="form-control" value="#{adminProductMB.selectedProduct.decription}" id="product-desc" />                          
+                        <h:inputTextarea rows="4" styleClass="form-control" value="#{adminProductMB.selectedProduct.decription}" id="product-desc" required="true" requiredMessage="Please input somethings for long description" >
+                            <f:validateLength minimum="20" />                        
+                        </h:inputTextarea> 
+                        <h:messages for="product-desc" style = "color:red;margin:8px;" />                         
                     </div>                    
                 </div>
                 <div class="panel-footer">
                     <div class="row">
                         <div class="col-sm-8 col-sm-offset-2">
-                            
+
                             <h:commandButton value="Update" action="#{adminProductMB.updateProduct()}" styleClass="btn btn-success" />
                             <h:commandButton value="Reset" type="reset" styleClass="btn btn-inverse" />
                         </div>
                     </div>
                 </div>
-                
-                
+
+
             </h:form>
             <!-- /order summary -->
             <div class="clearfix"> </div>
         </div>
 
         <div class="clearfix"> </div>
-        
-        
-        </ui:define>
 
-    </ui:composition>
+
+    </ui:define>
+
+</ui:composition>

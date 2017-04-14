@@ -156,7 +156,8 @@
                                             <div class="rate" style="margin: 10px">
                                                 <input type="hidden" class="rating" value="4"/>
                                                 <script>
-                                                    $('input').on('change', function() {                                                        
+                                                    $('input').on('change', function() {  
+                                                        var rate = $('input').rating('rate');
                                                     });
                                                 </script>
                                             </div>

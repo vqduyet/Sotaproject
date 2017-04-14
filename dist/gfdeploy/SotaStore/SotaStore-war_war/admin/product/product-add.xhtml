@@ -106,17 +106,19 @@
                 <div class="form-group">
                     <label for="product-img" class="col-sm-2 control-label">Image <span class="req">*</span></label>
                     <div class="col-sm-8">
-                        <h:inputFile value="#{adminProductMB.imageFile}" styleClass="form-control">
+                        <h:inputFile id="imageFile" value="#{adminProductMB.imageFile}" styleClass="form-control" required="true" requiredMessage="Image must be choice. Please select Food Image">
                             <f:ajax listener="#{adminProductMB.save}" />
-                        </h:inputFile>                        
+                        </h:inputFile> 
+                        <h:messages styleClass="alert alert-warning" for="imageFile" style = "color:red;margin:8px;" />
                     </div>                    
                 </div>
                 <div class="form-group">
                     <label for="product-detail-img" class="col-sm-2 control-label">Detail Image <span class="req">*</span></label>
                     <div class="col-sm-8">
-                        <h:inputFile styleClass="form-control" value="#{adminProductMB.imageDetailFile}">
+                        <h:inputFile id="imageDetailFile" styleClass="form-control" value="#{adminProductMB.imageDetailFile}" required="true" requiredMessage="Image must be choice. Please select Food Image">
                             <f:ajax listener="#{adminProductMB.save}" />
-                        </h:inputFile>                        
+                        </h:inputFile>     
+                        <h:messages styleClass="alert alert-warning" for="imageDetailFile" style = "color:red;margin:8px;" />
                     </div>                    
                 </div>
 
@@ -131,7 +133,7 @@
                 <div class="form-group">
                     <label for="product-price" class="col-sm-2 control-label">Price <span class="req">*</span></label>
                     <div class="col-sm-8">
-                        <h:inputText styleClass="form-control" value="#{adminProductMB.productNew.price}" a:placeholder="...price" id="product-price" 
+                        <h:inputText styleClass="form-control" value="#{adminProductMB.productNew.price}" a:placeholder="...price" id="product-price" required="true" requiredMessage="Price can't be blank"
                                      converterMessage="Characters are not allowed in that field. Please input number only."
                                      validatorMessage="The price must be greater than 10.000 đ">      
                             <f:validateDoubleRange minimum="10000.00" maximum="1000000.00" />
@@ -151,7 +153,7 @@
                 <div class="form-group">
                     <label for="product-short-desc" class="col-sm-2 control-label">Short Description <span class="req">*</span></label>
                     <div class="col-sm-8">
-                        <h:inputTextarea rows="4" styleClass="form-control" value="#{adminProductMB.productNew.shortDescriptions}" id="product-short-desc" > 
+                        <h:inputTextarea rows="4" styleClass="form-control" value="#{adminProductMB.productNew.shortDescriptions}" id="product-short-desc" required="true" requiredMessage="Please input somethings for short description" > 
                             <f:validateLength minimum="10" maximum="150" />
                         </h:inputTextarea>  
                         <h:messages for="product-short-desc" style = "color:red;margin:8px;" />
@@ -160,10 +162,10 @@
                 <div class="form-group">
                     <label for="product-desc" class="col-sm-2 control-label">Description <span class="req">*</span></label>
                     <div class="col-sm-8">
-                        <h:inputTextarea rows="4" styleClass="form-control" value="#{adminProductMB.productNew.decription}" id="product-desc" >
+                        <h:inputTextarea rows="4" styleClass="form-control" value="#{adminProductMB.productNew.decription}" id="product-desc" required="true" requiredMessage="Please input somethings for long description" >
                             <f:validateLength minimum="20" />                        
                         </h:inputTextarea> 
-                         <h:messages style = "color:red;margin:8px;" />
+                        <h:messages for="product-desc" style = "color:red;margin:8px;" />
                     </div>                    
                 </div>
                 <div class="panel-footer">

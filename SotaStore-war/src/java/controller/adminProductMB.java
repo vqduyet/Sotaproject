@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package controller;
 
 import beans.CatalogsFacadeLocal;
@@ -19,6 +18,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.Part;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -27,11 +27,12 @@ import javax.servlet.http.Part;
 @ManagedBean
 @SessionScoped
 public class adminProductMB {
+
     @EJB
     private CatalogsFacadeLocal catalogsFacade;
     @EJB
     private ProductsFacadeLocal productsFacade;
-    
+
     private Products productNew = new Products();
     private Products selectedProduct;
 
@@ -54,7 +55,7 @@ public class adminProductMB {
     public void setDefaultStatus(String defaultStatus) {
         this.defaultStatus = defaultStatus;
     }
-    
+
     public int getCatalogId() {
         return catalogId;
     }
@@ -62,8 +63,6 @@ public class adminProductMB {
     public void setCatalogId(int catalogId) {
         this.catalogId = catalogId;
     }
-    
-    
 
     public Part getImageDetailFile() {
         return imageDetailFile;
@@ -94,43 +93,38 @@ public class adminProductMB {
      */
     public adminProductMB() {
     }
-    
-    public List<Products> fetchAllProductList(){
-        return productsFacade.findAll();        
+
+    public List<Products> fetchAllProductList() {
+        return productsFacade.findAll();
     }
-    
-    public List<Products> fetchGetActiveProductList(){
+
+    public List<Products> fetchGetActiveProductList() {
         return productsFacade.getActiveProductList();
     }
-    
-    public List<Products> fetchGetInactiveProductList(){
+
+    public List<Products> fetchGetInactiveProductList() {
         return productsFacade.getInactiveProductList();
-    }  
-    
-    public String createProduct(){
+    }
+
+    public String createProduct() {
         uploadImage(imageFile);
         uploadImage(imageDetailFile);
         productNew.setStatus(defaultStatus);
         productNew.setCatalogId(catalogsFacade.find(catalogId));
-        productNew.setImageLink("images/food/"+imageFile.getSubmittedFileName());
-        productNew.setImageLinkDetail("images/food/"+imageDetailFile.getSubmittedFileName());
+        productNew.setImageLink("images/food/" + imageFile.getSubmittedFileName());
+        productNew.setImageLinkDetail("images/food/" + imageDetailFile.getSubmittedFileName());
         productNew.setDiscount(BigDecimal.ZERO);
         productsFacade.create(productNew);
         productNew = new Products();
         return "/admin/product/product-list?faces-redirect=true";
     }
-    
-    public void save(){
-        
-    }  
-    
-    public void uploadImage(Part filePart){
-        if(filePart!=null){            
-            //System.out.println(imageFile.getSubmittedFileName());
-            //System.out.println(imageFile.getContentType());
-            //System.out.println(imageFile.getSize());
-            //System.out.println(imageFile.getName());
-            
+
+    public void save() {
+
+    }
+
+    public void uploadImage(Part filePart) {
+        if (filePart != null) {
             //get path which contain file uploaded
             String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("resources\\images\\food\\");
             System.out.println(path);
@@ -139,24 +133,35 @@ public class adminProductMB {
                 InputStream in = filePart.getInputStream();
                 byte[] data = new byte[in.available()];
                 in.read(data);
-                FileOutputStream out = new FileOutputStream(new File(path+"\\" + filePart.getSubmittedFileName()));
+                FileOutputStream out = new FileOutputStream(new File(path + "\\" + filePart.getSubmittedFileName()));
                 out.write(data);
                 in.close();
                 out.close();
             } catch (Exception e) {
                 e.printStackTrace();
-            }            
+            }
+        } else {
+
         }
     }
-    
-      public String gotoEdit(int id){
+
+    public String gotoEdit(int id) {
         selectedProduct = productsFacade.find(id);
         return "/admin/product/product-edit?faces-redirect=true";
     }
-    
-    
-    public void updateProduct(){
+
+    public void updateProduct() {
+        //if (imageFile != null || imageDetailFile != null) {
+            uploadImage(imageFile);
+            uploadImage(imageDetailFile);
+            selectedProduct.setImageLink("images/food/" + imageFile.getSubmittedFileName());
+            selectedProduct.setImageLinkDetail("images/food/" + imageDetailFile.getSubmittedFileName());
+        //}
+        //selectedProduct.setStatus(defaultStatus);
         productsFacade.edit(selectedProduct);
+        String message = "Your product has been updated";
+        JOptionPane.showMessageDialog(null, message);
+        //JOptionPane.showMessageDialog(null, message, message, JOptionPane.INFORMATION_MESSAGE);
     }
-    
+
 }
