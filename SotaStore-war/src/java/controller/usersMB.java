@@ -193,7 +193,7 @@ public class usersMB {
     }
     
     public String changePassword() {
-        if (oldPassword.equals(loginUsers.getUserPass()) && confirmPassword.equals(newPassword)) {
+        if (oldPassword.equals(loginUsers.getUserPass()) && confirmPassword.equals(newPassword) && !oldPassword.equals(newPassword)) {
             loginUsers.setUserPass(newPassword);
         } else {
             return "/member/changePassword?faces-redirect=true";

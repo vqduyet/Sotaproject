@@ -10,5 +10,5 @@
         <property name="URL" value="jdbc:sqlserver://localhost:1433;databaseName=Sota_Cafe"/>
         <property name="driverClass" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
     </jdbc-connection-pool>
-    <jdbc-resource enabled="true" jndi-name="jndiSotaStore" object-type="user" pool-name="microsoft_sql_Sota_Cafe_saPool"/>
+    <jdbc-resource enabled="true" jndi-name="JNDISota" object-type="user" pool-name="microsoft_sql_Sota_Cafe_saPool"/>
 </resources>

@@ -46,7 +46,10 @@
                             <div class="form-group">
                                 <label class="col-sm-4 col-lg-4 col-md-4 control-label" style="font-weight: bold; color: #026660">Full Name <span style="color: orange; font-size: 15px">*</span></label>
                                 <div class="col-sm-7">
-                                    <h:inputText id="txtFullName" value="#{usersMB.loginUsers.fullName}" styleClass="form-control"/>
+                                    <h:inputText id="txtFullName" value="#{usersMB.loginUsers.fullName}" styleClass="form-control" required="true" requiredMessage="Fullname is required">
+                                        <f:validateLength maximum="50"/>
+                                    </h:inputText>
+                                    <h:message for="txtFullName"/>
                                 </div>
                                 
                             </div>
@@ -85,7 +88,8 @@
                                 <div class="form-group">
                                     <label class="col-lg-4 col-md-4 col-sm-4 control-label" style="font-size: small;">Address <span style="color: orange; font-weight: bold; font-size: 15px">*</span></label>
                                     <div class="col-lg-7 col-md-7 col-sm-7">
-                                        <h:inputTextarea id="txtAddress" value="#{usersMB.loginUsers.address}" class="form-control" rows="3" a:placeholder="Address"/>
+                                        <h:inputTextarea id="txtAddress" value="#{usersMB.loginUsers.address}" class="form-control" rows="3" a:placeholder="Address" required="true" requiredMessage="Address is required"/>
+                                        <h:message for="txtAddress"/> 
                                     </div>
                                 </div>
                             </div>
