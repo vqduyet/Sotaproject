@@ -12,12 +12,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 import javax.servlet.http.Part;
 import javax.swing.JOptionPane;
 
@@ -125,7 +128,7 @@ public class adminProductMB {
     }
 
     public void createProduct() {
-        if(productsFacade.checkProductName(productNew.getName().trim())){
+        if (productsFacade.checkProductName(productNew.getName().trim())) {
             FacesContext.getCurrentInstance().addMessage("addproductform", new FacesMessage("Product's name already exist please choose new name"));
         }
         uploadImage(imageFile);
@@ -174,26 +177,66 @@ public class adminProductMB {
     }
 
     public void updateProduct() {
-        if(productsFacade.checkProductName(selectedProduct.getName().trim())){
+        if (productsFacade.checkProductName(selectedProduct.getName().trim())) {
             FacesContext.getCurrentInstance().addMessage("editProductForm", new FacesMessage("Product's name already exist please choose new name"));
         }
-        //if (imageFile != null || imageDetailFile != null) {
+        if (!imageFile.getSubmittedFileName().isEmpty()) {
             uploadImage(imageFile);
-            uploadImage(imageDetailFile);
             selectedProduct.setImageLink("images/food/" + imageFile.getSubmittedFileName());
-            selectedProduct.setImageLinkDetail("images/food/" + imageDetailFile.getSubmittedFileName());
-        //}        
+        }
+        if (!imageDetailFile.getSubmittedFileName().isEmpty()) {
+            uploadImage(imageDetailFile);
+            selectedProduct.setImageLink("images/food/" + imageDetailFile.getSubmittedFileName());
+        }
         productsFacade.edit(selectedProduct);
-        FacesContext.getCurrentInstance().addMessage("editProductForm", new FacesMessage("New Product has been edited sucessfull"));        
+        FacesContext.getCurrentInstance().addMessage("editProductForm", new FacesMessage("New Product has been edited sucessfull"));
     }
-    
-    public void updateProductRating(int rate, int Id){
-        selectedProduct= productsFacade.find(Id);
+
+    public void updateProductRating(int rate, int Id) {
+        selectedProduct = productsFacade.find(Id);
         int oldRate = selectedProduct.getRateTotal();
         selectedProduct.setRateTotal(oldRate + rate);
-        int count = selectedProduct.getRateCount()+1;
+        int count = selectedProduct.getRateCount() + 1;
         selectedProduct.setRateCount(count);
         productsFacade.edit(selectedProduct);
+    }
+
+    public void validateFile(FacesContext ctx,
+            UIComponent comp,
+            Object value) {
+        List<FacesMessage> msgs = new ArrayList<FacesMessage>();
+        Part file = (Part) value;
+        if (file.getSize() > 2 * 1024 * 1024) {
+            System.out.println(file.getSize());
+            msgs.add(new FacesMessage("File too big!"));
+        }
+        if (!"image/gif".equals(file.getContentType()) && !"image/png".equals(file.getContentType()) && !"image/jpeg".equals(file.getContentType()) && !"image/jpg".equals(file.getContentType())) {
+            System.out.println(file.getContentType());
+            msgs.add(new FacesMessage("Not an image file!"));
+        }
+        if (!msgs.isEmpty()) {
+            throw new ValidatorException(msgs);
+        }
+
+    }
+
+    public void validateEditFile(Part file) {
+        if (file != null) {
+            List<FacesMessage> msgs = new ArrayList<FacesMessage>();
+
+            if (file.getSize() > 2 * 1024 * 1024) {
+                System.out.println(file.getSize());
+                msgs.add(new FacesMessage("File too big!"));
+            }
+            if (!"image/gif".equals(file.getContentType()) && !"image/png".equals(file.getContentType()) && !"image/jpeg".equals(file.getContentType()) && !"image/jpg".equals(file.getContentType())) {
+                System.out.println(file.getContentType());
+                msgs.add(new FacesMessage("Not an image file!"));
+            }
+            if (!msgs.isEmpty()) {
+                throw new ValidatorException(msgs);
+            }
+        }
+
     }
 
 }

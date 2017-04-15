@@ -106,6 +106,9 @@ public class productMB {
     
     public String gotoProductDetail(int id){
         selectedProduct  = productsFacade.find(id);
+        int oldView = selectedProduct.getViewNo();
+        selectedProduct.setViewNo(oldView + 1);
+        productsFacade.edit(selectedProduct);
         currentRate = selectedProduct.getRateTotal();
         if (selectedProduct.getRateCount()!=0)
             currentRate = (int)(currentRate / selectedProduct.getRateCount());
