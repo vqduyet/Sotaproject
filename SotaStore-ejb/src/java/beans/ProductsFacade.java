@@ -79,7 +79,17 @@ public class ProductsFacade extends AbstractFacade<Products> implements Products
         return !q.getResultList().isEmpty();       
     }
 
-   
+    @Override
+    public List<Products> checkProductNameNotIn(String productName) {
+        Query q = em.createQuery("SELECT p FROM Products p WHERE p.name != :name");
+        q.setParameter("name", productName);
+        if(!q.getResultList().isEmpty()){
+            return q.getResultList();
+        }
+        return null;
+    }
+
+    
     
     
     

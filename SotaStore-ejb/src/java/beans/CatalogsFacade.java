@@ -82,6 +82,16 @@ public class CatalogsFacade extends AbstractFacade<Catalogs> implements Catalogs
         q.setParameter("name", catalogName);        
         return !q.getResultList().isEmpty();
     }
+
+    @Override
+    public List<Catalogs> checkCatalogNameNotIn(String catalogName) {
+        Query q = em.createQuery("SELECT c FROM Catalogs c WHERE c.name != :name");
+        q.setParameter("name", catalogName);
+        if(!q.getResultList().isEmpty()){
+            return q.getResultList();
+        }
+        return null;
+    }
     
     
     

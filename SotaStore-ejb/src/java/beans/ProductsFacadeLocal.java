@@ -43,6 +43,8 @@ public interface ProductsFacadeLocal {
 
     boolean checkProductName(String productName);
 
+    List<Products> checkProductNameNotIn(String productName);
+
    
     
 }

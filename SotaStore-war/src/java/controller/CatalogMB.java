@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package controller;
 
 import beans.CatalogsFacadeLocal;
@@ -22,11 +21,12 @@ import javax.faces.context.FacesContext;
 @ManagedBean
 @SessionScoped
 public class CatalogMB {
+
     @EJB
     private CatalogsFacadeLocal catalogsFacade;
-private Catalogs catalogNew = new Catalogs();
-private Catalogs selectedCatalog;
-private String defaultStatus = "Normal";
+    private Catalogs catalogNew = new Catalogs();
+    private Catalogs selectedCatalog;
+    private String defaultStatus = "Normal";
 
     public String getDefaultStatus() {
         return defaultStatus;
@@ -51,63 +51,72 @@ private String defaultStatus = "Normal";
     public void setCatalogNew(Catalogs catalogNew) {
         this.catalogNew = catalogNew;
     }
-    
+
     /**
      * Creates a new instance of CatalogMB
      */
     public CatalogMB() {
     }
-    
-    public void addNewCatalog(){
-        catalogsFacade.create(catalogNew);
-        if(catalogsFacade.checkCatalogName(catalogNew.getName())){
+
+    public void addNewCatalog() {
+        catalogNew.setStatus(defaultStatus);
+        if (catalogsFacade.checkCatalogName(catalogNew.getName())) {
             FacesContext.getCurrentInstance().addMessage("addcatalogform", new FacesMessage("Catalog's name already exist please choose new name"));
         }
+        catalogsFacade.create(catalogNew);
+
         catalogNew = new Catalogs();
         FacesContext.getCurrentInstance().addMessage("addcatalogform", new FacesMessage("New Catalog has been added sucessfull"));
     }
-    
-    public List<Catalogs> fetchAllCatalogList(){
-        return catalogsFacade.findAll();        
+
+    public List<Catalogs> fetchAllCatalogList() {
+        return catalogsFacade.findAll();
     }
-    
-    public List<Catalogs> fetchActiveCatalogList(){
-       return catalogsFacade.getActiveCatalogsList(); 
+
+    public List<Catalogs> fetchActiveCatalogList() {
+        return catalogsFacade.getActiveCatalogsList();
     }
-    
-     public List<Catalogs> fetchInactiveCatalogList(){
-       return catalogsFacade.getInactiveCatalogsList(); 
+
+    public List<Catalogs> fetchInactiveCatalogList() {
+        return catalogsFacade.getInactiveCatalogsList();
     }
-    
-    public List<Catalogs> fetchParentList(){
+
+    public List<Catalogs> fetchParentList() {
         return catalogsFacade.getParentCatalogList();
     }
-    
-    public List<Catalogs> fetchSubCatalogList(){
+
+    public List<Catalogs> fetchSubCatalogList() {
         return catalogsFacade.getSubCatalogList();
     }
-    
-   public String gotoEdit(int id){
-       selectedCatalog = catalogsFacade.find(id);
-       return "/admin/catalog/catalog-edit?faces-redirect=true";
-   }
-   
-   public void updateCatalog(){
-       if(catalogsFacade.checkCatalogName(selectedCatalog.getName())){
-            FacesContext.getCurrentInstance().addMessage("editCatalogForm", new FacesMessage("Catalog's name already exist please choose new name"));
+
+    public String gotoEdit(int id) {
+        selectedCatalog = catalogsFacade.find(id);
+        return "/admin/catalog/catalog-edit?faces-redirect=true";
+    }
+
+    public void updateCatalog() {       
+        List<Catalogs> tempList = catalogsFacade.checkCatalogNameNotIn(selectedCatalog.getName());
+        if (!tempList.isEmpty()) {
+            for (Catalogs tempCatalog : tempList) {
+                if (!tempCatalog.getName().equalsIgnoreCase(selectedCatalog.getName())) {
+                    catalogsFacade.edit(selectedCatalog);
+                    FacesContext.getCurrentInstance().addMessage("editCatalogForm", new FacesMessage("New Catalog has been edited sucessfull"));
+                }
+                FacesContext.getCurrentInstance().addMessage("editCatalogForm", new FacesMessage("Catalog's name already exist please choose new name"));
+            }
         }
-    catalogsFacade.edit(selectedCatalog);
-    FacesContext.getCurrentInstance().addMessage("editCatalogForm", new FacesMessage("New Catalog has been edited sucessfull"));
-   }
-   
-   //parent catalog list    
-    public List<Catalogs> fetchMenuCatalog(){
+        //catalogsFacade.edit(selectedCatalog);
+        //FacesContext.getCurrentInstance().addMessage("editCatalogForm", new FacesMessage("New Catalog has been edited sucessfull"));
+    }
+
+    //parent catalog list    
+    public List<Catalogs> fetchMenuCatalog() {
         return catalogsFacade.getMenuCatalogs();
     }
-    
+
     //subcatlog by parent id
-    public List<Catalogs> fetchSubCatalogByParentId(int id){
+    public List<Catalogs> fetchSubCatalogByParentId(int id) {
         return catalogsFacade.getCatalogByParentId(id);
     }
-    
+
 }

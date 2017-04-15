@@ -153,26 +153,31 @@
                                             </div>                                        
                                         </div>
                                         <div class="tab-pane" id="2">
-                                            <h3>Notice the gap between the content and tab after applying a background color</h3>
-                                            <div class="rate" style="margin: 10px">
-                                                <h:form id="formRating" prependId="false">
+                                            <h:form id="notMember" rendered="#{usersMB.loginUsers == null}">
+                                                <h3>Please login for rating</h3>
+                                            </h:form>
+                                            <h:form id="formRating" prependId="false" rendered="#{usersMB.loginUsers != null}">
+                                                <h3>Your rating will make us better</h3>
+                                                <div class="rate" style="margin: 10px">
                                                     <h:outputText value="Rating"/>
                                                     <p:rating value="#{productMB.currentRate}" stars="5">
                                                         <p:ajax event="rate"
                                                                 listener="#{adminProductMB.updateProductRating(productMB.currentRate, productMB.selectedProduct.id)}"/>
-                                                    
+
                                                     </p:rating>
-                                                </h:form>
-                                            </div>
-                                        </div>                                   
+                                                    </div>
+                                            </h:form>
+                                        
+                                        </div>
+                                    </div>   
                                     </div>
                                 </div>
-                                <!-- /tabs-->
                             </div>
+                            <!-- /tabs-->
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        
     </ui:define>
 </ui:composition>

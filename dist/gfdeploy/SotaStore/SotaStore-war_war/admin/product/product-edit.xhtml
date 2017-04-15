@@ -107,17 +107,19 @@
                 <div class="form-group">
                     <label for="product-img" class="col-sm-2 control-label">Image <span class="req">*</span></label>
                     <div class="col-sm-8">
-                        <h:inputFile value="#{adminProductMB.imageFile}" styleClass="form-control" validator="#{adminProductMB.validateEditFile}">                            
+                        <h:inputFile value="#{adminProductMB.imageFile}" styleClass="form-control">                            
                         </h:inputFile>
                         <h:graphicImage style="margin-top: 5px;" value="#{resource[adminProductMB.selectedProduct.imageLink]}" styleClass="img-responsive" width="100px;" />
+                        <h:messages styleClass="alert alert-warning" for="imageFile" style = "color:red;margin:8px;" />
                     </div>                    
                 </div>
                 <div class="form-group">
                     <label for="product-detail-img" class="col-sm-2 control-label">Detail Image <span class="req">*</span></label>
                     <div class="col-sm-8">
-                        <h:inputFile styleClass="form-control" value="#{adminProductMB.imageDetailFile}" validator="#{adminProductMB.validateEditFile}">                            
+                        <h:inputFile styleClass="form-control" value="#{adminProductMB.imageDetailFile}">                            
                         </h:inputFile>
                         <h:graphicImage style="margin-top: 5px;" value="#{resource[adminProductMB.selectedProduct.imageLinkDetail]}" styleClass="img-responsive" width="100px;" />
+                        <h:messages styleClass="alert alert-warning" for="imageDetailFile" style = "color:red;margin:8px;" />
                     </div>                    
                 </div>
                 <div class="form-group">

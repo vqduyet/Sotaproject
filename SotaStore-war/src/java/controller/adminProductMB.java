@@ -177,19 +177,29 @@ public class adminProductMB {
     }
 
     public void updateProduct() {
-        if (productsFacade.checkProductName(selectedProduct.getName().trim())) {
-            FacesContext.getCurrentInstance().addMessage("editProductForm", new FacesMessage("Product's name already exist please choose new name"));
+        List<Products> tempList = productsFacade.checkProductNameNotIn(selectedProduct.getName());
+        if (!tempList.isEmpty()) {
+            for (Products tempProduct : tempList) {
+                if (!tempProduct.getName().equalsIgnoreCase(selectedProduct.getName())) {                    
+                    if (!imageFile.getSubmittedFileName().isEmpty()) {
+                        validateEditFile(imageFile);
+                        uploadImage(imageFile);
+                        selectedProduct.setImageLink("images/food/" + imageFile.getSubmittedFileName());
+                    }
+                    if (!imageDetailFile.getSubmittedFileName().isEmpty()) {
+                        validateEditFile(imageDetailFile);
+                        uploadImage(imageDetailFile);
+                        selectedProduct.setImageLink("images/food/" + imageDetailFile.getSubmittedFileName());
+                    }
+                    productsFacade.edit(selectedProduct);
+                    FacesContext.getCurrentInstance().addMessage("editProductForm", new FacesMessage("New Product has been edited sucessfull"));
+                }
+                FacesContext.getCurrentInstance().addMessage("editProductForm", new FacesMessage("Product's name already exist please choose new name"));
+            }
         }
-        if (!imageFile.getSubmittedFileName().isEmpty()) {
-            uploadImage(imageFile);
-            selectedProduct.setImageLink("images/food/" + imageFile.getSubmittedFileName());
-        }
-        if (!imageDetailFile.getSubmittedFileName().isEmpty()) {
-            uploadImage(imageDetailFile);
-            selectedProduct.setImageLink("images/food/" + imageDetailFile.getSubmittedFileName());
-        }
-        productsFacade.edit(selectedProduct);
-        FacesContext.getCurrentInstance().addMessage("editProductForm", new FacesMessage("New Product has been edited sucessfull"));
+
+        //productsFacade.edit(selectedProduct);
+        //FacesContext.getCurrentInstance().addMessage("editProductForm", new FacesMessage("New Product has been edited sucessfull"));
     }
 
     public void updateProductRating(int rate, int Id) {
