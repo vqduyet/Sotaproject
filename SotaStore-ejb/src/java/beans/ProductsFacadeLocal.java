@@ -40,5 +40,9 @@ public interface ProductsFacadeLocal {
     List<Products> getInactiveProductList(); 
     
     List<Products> getSpecialDishes();
+
+    boolean checkProductName(String productName);
+
+   
     
 }

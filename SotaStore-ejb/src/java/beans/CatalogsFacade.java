@@ -75,6 +75,14 @@ public class CatalogsFacade extends AbstractFacade<Catalogs> implements Catalogs
         q.setParameter("parentId", 0);        
         return q.getResultList();
     }
+
+    @Override
+    public boolean checkCatalogName(String catalogName) {
+        Query q = em.createNamedQuery("Catalogs.findByName");
+        q.setParameter("name", catalogName);        
+        return !q.getResultList().isEmpty();
+    }
+    
     
     
 }

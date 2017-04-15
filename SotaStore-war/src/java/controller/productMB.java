@@ -26,7 +26,16 @@ public class productMB {
     private String searchStr;
     private List<Products> searchList = new ArrayList<Products>();
     private List<Products> productList;
+    private int currentRate;
 
+    public int getCurrentRate() {
+        return currentRate;
+    }
+
+    public void setCurrentRate(int currentRate) {
+        this.currentRate = currentRate;
+    }
+    
     public List<Products> getProductList() {
         return productList;
     }
@@ -97,6 +106,9 @@ public class productMB {
     
     public String gotoProductDetail(int id){
         selectedProduct  = productsFacade.find(id);
+        currentRate = selectedProduct.getRateTotal();
+        if (selectedProduct.getRateCount()!=0)
+            currentRate = (int)(currentRate / selectedProduct.getRateCount());
         return "/product/productDetail?faces-redirect=true";
     }
     

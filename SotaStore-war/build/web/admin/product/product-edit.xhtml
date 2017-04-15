@@ -93,11 +93,12 @@
             <div class="row">
                 <hr style="border-bottom: solid 1px #fff;"/>
             </div>
-            <h:form class="form-horizontal" enctype="multipart/form-data">
+            <h:form id="editProductForm" class="form-horizontal" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="product-name" class="col-sm-2 control-label">Product Name <span class="req">*</span></label>
                     <div class="col-sm-8">
                         <h:inputText styleClass="form-control" value="#{adminProductMB.selectedProduct.name}" a:placeholder="...product name" id="product-name" required="true" requiredMessage="Product Name can't be blank. Please enter value">
+                            <f:converter converterId="converter.TrimConverter"/>
                             <f:validateLength minimum="6" maximum="100" />
                         </h:inputText>
                         <h:messages styleClass="alert alert-warning" for="product-name" style = "color:red;margin:8px;" />
@@ -153,6 +154,7 @@
                     <label for="product-short-desc" class="col-sm-2 control-label">Short Description <span class="req">*</span></label>
                     <div class="col-sm-8">
                         <h:inputTextarea rows="4" styleClass="form-control" value="#{adminProductMB.selectedProduct.shortDescriptions}" id="product-short-desc" required="true" requiredMessage="Please input somethings for short description" > 
+                            <f:converter converterId="converter.TrimConverter"/>
                             <f:validateLength minimum="10" maximum="150" />
                         </h:inputTextarea>  
                         <h:messages for="product-short-desc" style = "color:red;margin:8px;" />                      
@@ -162,6 +164,7 @@
                     <label for="product-desc" class="col-sm-2 control-label">Description <span class="req">*</span></label>
                     <div class="col-sm-8">
                         <h:inputTextarea rows="4" styleClass="form-control" value="#{adminProductMB.selectedProduct.decription}" id="product-desc" required="true" requiredMessage="Please input somethings for long description" >
+                            <f:converter converterId="converter.TrimConverter"/>
                             <f:validateLength minimum="20" />                        
                         </h:inputTextarea> 
                         <h:messages for="product-desc" style = "color:red;margin:8px;" />                         
@@ -176,8 +179,7 @@
                         </div>
                     </div>
                 </div>
-
-
+                <h:message for="editProductForm" styleClass="alert alert-info"  style = "color:red;margin:8px;"/>
             </h:form>
             <!-- /order summary -->
             <div class="clearfix"> </div>

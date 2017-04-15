@@ -13,6 +13,9 @@
 
     <ui:define name="content">
         <style>
+            .alert li{
+                list-style: none;
+            }
             .page-title{
                 background-color: #ccc;
                 padding-top: 10px;
@@ -86,7 +89,7 @@
             <div class="row">
                 <hr style="border-bottom: solid 1px #fff;"/>
             </div>
-            <h:form class="form-horizontal" prependId="false">
+            <h:form id="editCatalogForm" class="form-horizontal" prependId="false">
                 <div class="form-group">
                     <label for="catalog-name" class="col-sm-2 control-label">Catalog ID </label>
                     <div class="col-sm-8">
@@ -97,6 +100,7 @@
                     <label for="catalog-name" class="col-sm-2 control-label">Catalog Name <span class="req">*</span></label>
                     <div class="col-sm-8">
                         <h:inputText styleClass="form-control" required="true" value="#{catalogMB.selectedCatalog.name}" a:placeholder="...catalog name" id="catalog-name" requiredMessage="Catalog Name can't be blank. Please enter value">
+                            <f:converter converterId="converter.TrimConverter"/>
                             <f:validateLength minimum="4"/>
                         </h:inputText>
                         <h:messages styleClass="alert alert-warning" for="catalog-name" style = "color:red;margin:8px;" />
@@ -134,7 +138,7 @@
                         </div>
                     </div>
                 </div>
-                
+                <h:message for="editCatalogForm" styleClass="alert alert-info"  style = "color:red;margin:8px;"/>
             </h:form>
             <!-- /order summary -->
             <div class="clearfix"> </div>

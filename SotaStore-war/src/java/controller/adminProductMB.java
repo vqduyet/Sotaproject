@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -32,7 +33,7 @@ public class adminProductMB {
     private CatalogsFacadeLocal catalogsFacade;
     @EJB
     private ProductsFacadeLocal productsFacade;
-
+    private int currentRate;
     private Products productNew = new Products();
     private Products selectedProduct;
 
@@ -47,6 +48,23 @@ public class adminProductMB {
     private Part imageDetailFile;
     private int catalogId;
     private String defaultStatus = "Normal";
+    private int rating;
+
+    public int getCurrentRate() {
+        return currentRate;
+    }
+
+    public void setCurrentRate(int currentRate) {
+        this.currentRate = currentRate;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
 
     public String getDefaultStatus() {
         return defaultStatus;
@@ -106,7 +124,10 @@ public class adminProductMB {
         return productsFacade.getInactiveProductList();
     }
 
-    public String createProduct() {
+    public void createProduct() {
+        if(productsFacade.checkProductName(productNew.getName().trim())){
+            FacesContext.getCurrentInstance().addMessage("addproductform", new FacesMessage("Product's name already exist please choose new name"));
+        }
         uploadImage(imageFile);
         uploadImage(imageDetailFile);
         productNew.setStatus(defaultStatus);
@@ -116,7 +137,8 @@ public class adminProductMB {
         productNew.setDiscount(BigDecimal.ZERO);
         productsFacade.create(productNew);
         productNew = new Products();
-        return "/admin/product/product-list?faces-redirect=true";
+        FacesContext.getCurrentInstance().addMessage("addproductform", new FacesMessage("New Product has been added sucessfull"));
+        //return "/admin/product/product-list?faces-redirect=true";
     }
 
     public void save() {
@@ -147,21 +169,31 @@ public class adminProductMB {
 
     public String gotoEdit(int id) {
         selectedProduct = productsFacade.find(id);
+        currentRate = selectedProduct.getRateTotal();
         return "/admin/product/product-edit?faces-redirect=true";
     }
 
     public void updateProduct() {
+        if(productsFacade.checkProductName(selectedProduct.getName().trim())){
+            FacesContext.getCurrentInstance().addMessage("editProductForm", new FacesMessage("Product's name already exist please choose new name"));
+        }
         //if (imageFile != null || imageDetailFile != null) {
             uploadImage(imageFile);
             uploadImage(imageDetailFile);
             selectedProduct.setImageLink("images/food/" + imageFile.getSubmittedFileName());
             selectedProduct.setImageLinkDetail("images/food/" + imageDetailFile.getSubmittedFileName());
-        //}
-        //selectedProduct.setStatus(defaultStatus);
+        //}        
         productsFacade.edit(selectedProduct);
-        String message = "Your product has been updated";
-        JOptionPane.showMessageDialog(null, message);
-        //JOptionPane.showMessageDialog(null, message, message, JOptionPane.INFORMATION_MESSAGE);
+        FacesContext.getCurrentInstance().addMessage("editProductForm", new FacesMessage("New Product has been edited sucessfull"));        
+    }
+    
+    public void updateProductRating(int rate, int Id){
+        selectedProduct= productsFacade.find(Id);
+        int oldRate = selectedProduct.getRateTotal();
+        selectedProduct.setRateTotal(oldRate + rate);
+        int count = selectedProduct.getRateCount()+1;
+        selectedProduct.setRateCount(count);
+        productsFacade.edit(selectedProduct);
     }
 
 }

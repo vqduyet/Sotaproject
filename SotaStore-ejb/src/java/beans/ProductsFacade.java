@@ -71,6 +71,15 @@ public class ProductsFacade extends AbstractFacade<Products> implements Products
         q.setParameter("day", simpleDateformat.format(now));
         return q.getResultList();
     }
+
+    @Override
+    public boolean checkProductName(String productName) {
+        Query q = em.createNamedQuery("Products.findByName");
+        q.setParameter("name", productName);        
+        return !q.getResultList().isEmpty();       
+    }
+
+   
     
     
     

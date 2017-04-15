@@ -5,7 +5,8 @@
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
-    template="./../layout/mainLayout.xhtml">
+    template="./../layout/mainLayout.xhtml"
+    xmlns:p="http://primefaces.org/ui">
 
     <ui:define name="title">
         <title>Food Detail</title>
@@ -80,7 +81,7 @@
                                         <h2><h:outputText value="#{productMB.selectedProduct.name}" escape="false" /></h2>
                                         <div class="general">
                                             <div class="col-md-6 col-sm-6 col-sx-12">
-                                                <input type="hidden" class="rating" value="4"/>
+                                                <p:rating value="#{productMB.currentRate}" readonly="true"/>
                                             </div>
                                             <div class="col-md-6 col-sm-6 col-sx-12">                                                
                                                 <h5>Total Rating: <i class="badge"><h:outputText value="#{productMB.selectedProduct.rateTotal}"/></i></h5>
@@ -154,12 +155,14 @@
                                         <div class="tab-pane" id="2">
                                             <h3>Notice the gap between the content and tab after applying a background color</h3>
                                             <div class="rate" style="margin: 10px">
-                                                <input type="hidden" class="rating" value="4"/>
-                                                <script>
-                                                    $('input').on('change', function() {  
-                                                        var rate = $('input').rating('rate');
-                                                    });
-                                                </script>
+                                                <h:form id="formRating" prependId="false">
+                                                    <h:outputText value="Rating"/>
+                                                    <p:rating value="#{productMB.currentRate}" stars="5">
+                                                        <p:ajax event="rate"
+                                                                listener="#{adminProductMB.updateProductRating(productMB.currentRate, productMB.selectedProduct.id)}"/>
+                                                    
+                                                    </p:rating>
+                                                </h:form>
                                             </div>
                                         </div>                                   
                                     </div>

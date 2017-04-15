@@ -10,8 +10,10 @@ import beans.CatalogsFacadeLocal;
 import entity.Catalogs;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -58,7 +60,11 @@ private String defaultStatus = "Normal";
     
     public void addNewCatalog(){
         catalogsFacade.create(catalogNew);
+        if(catalogsFacade.checkCatalogName(catalogNew.getName())){
+            FacesContext.getCurrentInstance().addMessage("addcatalogform", new FacesMessage("Catalog's name already exist please choose new name"));
+        }
         catalogNew = new Catalogs();
+        FacesContext.getCurrentInstance().addMessage("addcatalogform", new FacesMessage("New Catalog has been added sucessfull"));
     }
     
     public List<Catalogs> fetchAllCatalogList(){
@@ -87,7 +93,11 @@ private String defaultStatus = "Normal";
    }
    
    public void updateCatalog(){
+       if(catalogsFacade.checkCatalogName(selectedCatalog.getName())){
+            FacesContext.getCurrentInstance().addMessage("editCatalogForm", new FacesMessage("Catalog's name already exist please choose new name"));
+        }
     catalogsFacade.edit(selectedCatalog);
+    FacesContext.getCurrentInstance().addMessage("editCatalogForm", new FacesMessage("New Catalog has been edited sucessfull"));
    }
    
    //parent catalog list    

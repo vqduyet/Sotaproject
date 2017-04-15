@@ -42,5 +42,7 @@ public interface CatalogsFacadeLocal {
     List<Catalogs> getInactiveCatalogsList();
 
     List<Catalogs> getSubCatalogList();
+
+    boolean checkCatalogName(String catalogName);
     
 }
